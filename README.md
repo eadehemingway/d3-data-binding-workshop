@@ -1,12 +1,40 @@
 # use d3 with react
 
-### the challenge
+## the challenge
 
-put all your code in the App.js file.
-It should have the same functionality as it had before it used react.
-Think about how the what should trigger the update function...
+you have this data:
 
-### to run the app for development
+```js
+const data = [
+  { id: 1, radius: 20, x: 150, color: '#FDA7DF' },
+  { id: 2, radius: 40, x: 400, color: '#54a0ff' },
+  { id: 3, radius: 0, x: 650, color: '#e84118' }
+];
+```
+
+for each item of data we want to create three circles; Two dynamic circles that will increase and decrease when we press the buttons, and one static one that will always stay the same size.
+
+### The static circle
+
+The static circle will have radius of 100, a stroke-width of 3px, and be the colour stated in the data.
+
+### The coloured-dynamic circle
+
+The coloured-dynamic circle will have the radius and colour stated in the data and a stroke width of 1px.
+
+### The coral-dynamic circle
+
+The coral-dynamic circle will have a radius 5px bigger than the coloured-dynamic circle, stroke width of 3px and color: 'coral'.
+
+The x value for each circle is in the data, the y value should position the circles in the vertical center of the svg.
+
+The two dynamic circles will increase in size when we press the + button until it reaches the size of the static circle then it will remain that size, until the '-' button is pressed.
+
+### The text
+
+Each circle will have text in the center of it that displays the radius of the circle (i.e. it will change when the radius changes). The font-size of this text should be half of the radius and should also increase/ decrease when the radius does.
+
+## to run the app for development
 
 in public
 

@@ -6,53 +6,67 @@ export class App extends React.Component {
     super(props);
     this.state = {
       data: [
-        { id: 1, height: 90, liquidHeight: 35, color: '#FDA7DF' },
-        { id: 2, height: 100, liquidHeight: 40, color: '#54a0ff' },
-        { id: 3, height: 50, liquidHeight: 10, color: '#e84118' },
-        { id: 4, height: 30, liquidHeight: 20, color: '#FF851B' },
-        { id: 5, height: 80, liquidHeight: 30, color: '#3D9970' },
-        { id: 6, height: 20, liquidHeight: 5, color: '#9980FA' }
+        { id: 1, radius: 90, x: 150, color: '#FDA7DF' }
+        // { id: 2, radius: 40, x: 400, color: '#54a0ff' },
+        // { id: 3, radius: 0, x: 650, color: '#e84118' }
       ],
-      vaseY: 300
+      staticCircleRadius: 100
     };
   }
   componentDidMount() {
-    const { data, vaseY } = this.state;
-    const svgWidth = 700;
+    const { data, staticCircleRadius } = this.state;
+    const svgWidth = 800;
     const svgHeight = 500;
-    d3.select('#chart')
-      .append('svg')
+    d3.select('#svg')
       .attr('width', svgWidth)
       .attr('height', svgHeight);
 
-    const vaseGroups = d3
+    const circleGroup = d3
       .select('svg')
       .selectAll('g')
       .data(data)
       .enter()
       .append('g')
-      .attr('class', 'vase-group');
-    const margin = 230;
-    const padding = 60;
-    const vaseWidth = 15;
+      .attr('class', 'circle-group');
 
-    vaseGroups
-      .append('rect')
-      .attr('class', 'vase')
-      .attr('width', vaseWidth)
-      .attr('height', d => d.height)
-      .attr('x', (_, i) => i * padding + margin)
-      .attr('y', d => vaseY - d.height)
+    circleGroup
+      .append('circle')
+      .attr('class', 'inner-circle')
+      .attr('r', d => d.radius)
+      .attr('cx', d => d.x)
+      .attr('cy', svgHeight / 2)
       .attr('fill', 'none')
+      .attr('fill-opacity', 0)
       .attr('stroke', d => d.color);
 
-    vaseGroups
-      .append('rect')
-      .attr('class', 'liquid')
-      .attr('width', vaseWidth)
-      .attr('height', d => d.liquidHeight)
-      .attr('x', (_, i) => i * padding + margin)
-      .attr('y', d => vaseY - d.liquidHeight)
+    circleGroup
+      .append('circle')
+      .attr('class', 'outer-circle')
+      .attr('r', d => d.radius + 5)
+      .attr('cx', d => d.x)
+      .attr('cy', svgHeight / 2)
+      .attr('fill', 'none')
+      .attr('stroke', 'coral')
+      .attr('stroke-width', 3);
+    circleGroup
+      .append('circle')
+      .attr('class', 'static-circle')
+      .attr('r', staticCircleRadius)
+      .attr('cx', d => d.x)
+      .attr('cy', svgHeight / 2)
+      .attr('fill', 'none')
+      .attr('stroke', d => d.color)
+      .attr('stroke-width', 5);
+
+    circleGroup
+      .append('text')
+      .text(d => d.radius)
+      .attr('x', d => d.x)
+      .attr('y', svgHeight / 2)
+      .attr('font-size', d => d.radius / 2)
+      .attr('font-family', 'sans-serif')
+      .attr('text-anchor', 'middle')
+      .attr('alignment-baseline', 'central')
       .attr('fill', d => d.color);
   }
 
@@ -61,28 +75,50 @@ export class App extends React.Component {
   }
 
   redrawLiquid = () => {
-    const { vaseY, data } = this.state;
-    const vaseGroups = d3.selectAll('.vase-group');
-    vaseGroups
-      .data(data)
-      .select('rect.liquid')
+    const { data } = this.state;
+    const circleGroup = d3.selectAll('.circle-group').data(data);
+    circleGroup
+      .select('.inner-circle')
       .transition()
       .duration(750)
-      .attr('height', d => d.liquidHeight)
-      .attr('y', d => vaseY - d.liquidHeight);
+      .attr('r', d => d.radius)
+      .attr('fill', d => {
+        return d.radius === 100 ? d.color : 'none';
+      })
+      .attr('fill-opacity', d => {
+        const op = d.radius === 100 ? 0.5 : 0;
+        console.log(op);
+        return op;
+      });
+
+    circleGroup
+      .select('.outer-circle')
+      .transition()
+      .duration(250)
+      .attr('r', d => d.radius + 5);
+
+    circleGroup
+      .select('text')
+      .text(d => d.radius)
+      .transition()
+      .duration(250)
+      .attr('font-size', d => d.radius);
   };
 
   updateData = direction => {
-    const { data } = this.state;
+    const { data, staticCircleRadius } = this.state;
 
     const newData = data.map(d => {
-      const newValue =
-        direction === 'increase' ? d.liquidHeight + 10 : d.liquidHeight - 10;
+      const newValue = direction === 'increase' ? d.radius + 10 : d.radius - 10;
 
-      const newLiquidHeight =
-        newValue > d.height ? d.height : newValue < 0 ? 0 : newValue;
+      const checkedValue =
+        newValue < 0
+          ? 0
+          : newValue > staticCircleRadius
+          ? staticCircleRadius
+          : newValue;
 
-      return { ...d, liquidHeight: newLiquidHeight };
+      return { ...d, radius: checkedValue };
     });
     this.setState({ data: newData });
   };
@@ -90,7 +126,9 @@ export class App extends React.Component {
   render() {
     return (
       <section>
-        <div id="chart" />
+        <div id="chart">
+          <svg id="svg" />
+        </div>
         <div className="button-container">
           <button
             id="increase"

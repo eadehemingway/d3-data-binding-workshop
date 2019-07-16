@@ -6,9 +6,9 @@ you have this data:
 
 ```js
 const data = [
-  { id: 1, radius: 20, x: 150, color: '#FDA7DF' },
-  { id: 2, radius: 40, x: 400, color: '#54a0ff' },
-  { id: 3, radius: 0, x: 650, color: '#e84118' }
+  { id: 1, radius: 20, x: 150, color: '#2F4F4F' },
+  { id: 2, radius: 10, x: 400, color: '#8B0000' },
+  { id: 3, radius: 40, x: 650, color: '#708090' }
 ];
 ```
 
@@ -28,7 +28,7 @@ The coral-dynamic circle will have a radius 5px bigger than the coloured-dynamic
 
 The x value for each circle is in the data, the y value should position the circles in the vertical center of the svg.
 
-The two dynamic circles will increase in size when we press the + button until it reaches the size of the static circle then it will remain that size, until the '-' button is pressed.
+The two dynamic circles will increase in size when we press the + button until it reaches the size of the static circle then it will remain that size, until the '-' button is pressed. When the dynamic circles reach the static circle they should change colour to be filled with the colour stated in the data, opacity: 0.5 (bonus points for make the colour fade in and out!)
 
 ### The text
 

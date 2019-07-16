@@ -6,9 +6,9 @@ export class App extends React.Component {
     super(props);
     this.state = {
       data: [
-        { id: 1, radius: 90, x: 150, color: '#FDA7DF' }
-        // { id: 2, radius: 40, x: 400, color: '#54a0ff' },
-        // { id: 3, radius: 0, x: 650, color: '#e84118' }
+        { id: 1, radius: 20, x: 150, color: '#2F4F4F' },
+        { id: 2, radius: 10, x: 400, color: '#8B0000' },
+        { id: 3, radius: 40, x: 650, color: '#708090' }
       ],
       staticCircleRadius: 100
     };
@@ -16,7 +16,7 @@ export class App extends React.Component {
   componentDidMount() {
     const { data, staticCircleRadius } = this.state;
     const svgWidth = 800;
-    const svgHeight = 500;
+    const svgHeight = 400;
     d3.select('#svg')
       .attr('width', svgWidth)
       .attr('height', svgHeight);
@@ -35,7 +35,7 @@ export class App extends React.Component {
       .attr('r', d => d.radius)
       .attr('cx', d => d.x)
       .attr('cy', svgHeight / 2)
-      .attr('fill', 'none')
+      .attr('fill', d => d.color)
       .attr('fill-opacity', 0)
       .attr('stroke', d => d.color);
 
@@ -56,7 +56,7 @@ export class App extends React.Component {
       .attr('cy', svgHeight / 2)
       .attr('fill', 'none')
       .attr('stroke', d => d.color)
-      .attr('stroke-width', 5);
+      .attr('stroke-width', 3);
 
     circleGroup
       .append('text')
@@ -80,28 +80,21 @@ export class App extends React.Component {
     circleGroup
       .select('.inner-circle')
       .transition()
-      .duration(750)
+      .duration(600)
       .attr('r', d => d.radius)
-      .attr('fill', d => {
-        return d.radius === 100 ? d.color : 'none';
-      })
-      .attr('fill-opacity', d => {
-        const op = d.radius === 100 ? 0.5 : 0;
-        console.log(op);
-        return op;
-      });
+      .attr('fill-opacity', d => (d.radius === 100 ? 0.5 : 0));
 
     circleGroup
       .select('.outer-circle')
       .transition()
-      .duration(250)
+      .duration(600)
       .attr('r', d => d.radius + 5);
 
     circleGroup
       .select('text')
       .text(d => d.radius)
       .transition()
-      .duration(250)
+      .duration(600)
       .attr('font-size', d => d.radius);
   };
 

@@ -7,7 +7,7 @@ export class App extends React.Component {
     this.state = {
       data: [
         { id: 1, radius: 20, x: 150, color: '#2F4F4F' },
-        { id: 2, radius: 10, x: 400, color: '#8B0000' },
+        { id: 2, radius: 10, x: 400, color: 'lightpink' },
         { id: 3, radius: 40, x: 650, color: '#708090' }
       ],
       staticCircleRadius: 100

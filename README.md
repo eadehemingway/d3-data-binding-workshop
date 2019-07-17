@@ -1,4 +1,6 @@
-# use d3 with react
+# data binding workshop
+
+![](./disc-gif.gif)
 
 ## the challenge
 

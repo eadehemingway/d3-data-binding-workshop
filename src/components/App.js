@@ -14,9 +14,9 @@ export class App extends React.Component {
     };
   }
   componentDidMount() {
-    // in here we need to create a group for each of the three bits of data,
-    // bind these groups to the data
-    // and create the three circles for each group
+    // in here we need to bind each bit of data to a group
+    // in this group we will append all the circles that relate to this group
+
   }
 
   componentDidUpdate() {

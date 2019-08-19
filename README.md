@@ -38,16 +38,6 @@ Each circle will have text in the center of it that displays the radius of the c
 
 ## to run the app for development
 
-in public
-
 ```
-npm run build:watch
+npm run dev-server
 ```
-
-in server
-
-```
-npm start
-```
-
-go to http://localhost:3000

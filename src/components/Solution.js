@@ -17,12 +17,12 @@ export class App extends React.Component {
     const { data, staticCircleRadius } = this.state
     const svgWidth = 800
     const svgHeight = 400
-    d3.select('#svg')
+    const svg = d3
+      .select('#svg')
       .attr('width', svgWidth)
       .attr('height', svgHeight)
 
-    const circleGroup = d3
-      .select('svg')
+    const circleGroup = svg
       .selectAll('g')
       .data(data)
       .enter()
@@ -48,6 +48,7 @@ export class App extends React.Component {
       .attr('fill', 'none')
       .attr('stroke', 'coral')
       .attr('stroke-width', 3)
+
     circleGroup
       .append('circle')
       .attr('class', 'static-circle')

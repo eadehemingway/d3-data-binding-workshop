@@ -1,9 +1,9 @@
-import React from 'react';
-import * as d3 from 'd3';
+import React from 'react'
+import * as d3 from 'd3'
 
 export class App extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       data: [
         { id: 1, radius: 20, x: 150, color: '#2F4F4F' },
@@ -11,15 +11,15 @@ export class App extends React.Component {
         { id: 3, radius: 40, x: 650, color: '#708090' }
       ],
       staticCircleRadius: 100
-    };
+    }
   }
   componentDidMount() {
-    const { data, staticCircleRadius } = this.state;
-    const svgWidth = 800;
-    const svgHeight = 400;
+    const { data, staticCircleRadius } = this.state
+    const svgWidth = 800
+    const svgHeight = 400
     d3.select('#svg')
       .attr('width', svgWidth)
-      .attr('height', svgHeight);
+      .attr('height', svgHeight)
 
     const circleGroup = d3
       .select('svg')
@@ -27,7 +27,7 @@ export class App extends React.Component {
       .data(data)
       .enter()
       .append('g')
-      .attr('class', 'circle-group');
+      .attr('class', 'circle-group')
 
     circleGroup
       .append('circle')
@@ -37,7 +37,7 @@ export class App extends React.Component {
       .attr('cy', svgHeight / 2)
       .attr('fill', d => d.color)
       .attr('fill-opacity', 0)
-      .attr('stroke', d => d.color);
+      .attr('stroke', d => d.color)
 
     circleGroup
       .append('circle')
@@ -47,7 +47,7 @@ export class App extends React.Component {
       .attr('cy', svgHeight / 2)
       .attr('fill', 'none')
       .attr('stroke', 'coral')
-      .attr('stroke-width', 3);
+      .attr('stroke-width', 3)
     circleGroup
       .append('circle')
       .attr('class', 'static-circle')
@@ -56,7 +56,7 @@ export class App extends React.Component {
       .attr('cy', svgHeight / 2)
       .attr('fill', 'none')
       .attr('stroke', d => d.color)
-      .attr('stroke-width', 3);
+      .attr('stroke-width', 3)
 
     circleGroup
       .append('text')
@@ -67,54 +67,54 @@ export class App extends React.Component {
       .attr('font-family', 'sans-serif')
       .attr('text-anchor', 'middle')
       .attr('alignment-baseline', 'central')
-      .attr('fill', d => d.color);
+      .attr('fill', d => d.color)
   }
 
   componentDidUpdate() {
-    this.redrawLiquid();
+    this.redrawCircles()
   }
 
-  redrawLiquid = () => {
-    const { data } = this.state;
-    const circleGroup = d3.selectAll('.circle-group').data(data);
+  redrawCircles = () => {
+    const { data } = this.state
+    const circleGroup = d3.selectAll('.circle-group').data(data)
     circleGroup
       .select('.inner-circle')
       .transition()
       .duration(600)
       .attr('r', d => d.radius)
-      .attr('fill-opacity', d => (d.radius === 100 ? 0.5 : 0));
+      .attr('fill-opacity', d => (d.radius === 100 ? 0.5 : 0))
 
     circleGroup
       .select('.outer-circle')
       .transition()
       .duration(600)
-      .attr('r', d => d.radius + 5);
+      .attr('r', d => d.radius + 5)
 
     circleGroup
       .select('text')
       .text(d => d.radius)
       .transition()
       .duration(600)
-      .attr('font-size', d => d.radius);
-  };
+      .attr('font-size', d => d.radius)
+  }
 
   updateData = direction => {
-    const { data, staticCircleRadius } = this.state;
+    const { data, staticCircleRadius } = this.state
 
     const newData = data.map(d => {
-      const newValue = direction === 'increase' ? d.radius + 10 : d.radius - 10;
+      const newValue = direction === 'increase' ? d.radius + 10 : d.radius - 10
 
       const checkedValue =
         newValue < 0
           ? 0
           : newValue > staticCircleRadius
           ? staticCircleRadius
-          : newValue;
+          : newValue
 
-      return { ...d, radius: checkedValue };
-    });
-    this.setState({ data: newData });
-  };
+      return { ...d, radius: checkedValue }
+    })
+    this.setState({ data: newData })
+  }
 
   render() {
     return (
@@ -139,6 +139,6 @@ export class App extends React.Component {
           </button>
         </div>
       </section>
-    );
+    )
   }
 }
